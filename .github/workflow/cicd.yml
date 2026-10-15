@@ -1,0 +1,19 @@
+jobs:
+  test-and-build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository code
+        uses: actions/checkout@v4
+      # ... बाकी के स्टेप्स ...
+
+  deploy:
+    needs: test-and-build
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository code
+        uses: actions/checkout@v4
+      - name: Deploy to Cloud Provider
+        run: |
+          echo "Deploying application to production..."
+          curl -X POST -d {} "${{ secrets.DEPLOY_WEBHOOK_URL }}"
